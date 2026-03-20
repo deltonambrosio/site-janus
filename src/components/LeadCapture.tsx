@@ -15,9 +15,8 @@ const LeadCapture = () => {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      // Usando FormSubmit.co para envio direto via AJAX (sem precisar de backend complexo)
-      // Substitua "SEU_EMAIL_AQUI@dominio.com" pelo e-mail comercial real de vocês.
-      await fetch("https://formsubmit.co/ajax/contato@janus.education", {
+      // O e-mail principal (dr.pts001) receberá a mensagem e pedirá confirmação no primeiro envio
+      await fetch("https://formsubmit.co/ajax/dr.pts001@gmail.com", {
         method: "POST",
         headers: { 
             'Content-Type': 'application/json',
@@ -29,7 +28,8 @@ const LeadCapture = () => {
             WhatsApp: data.whatsapp,
             Empresa: data.company,
             Perfil: data.profile,
-            _subject: "Novo Lead - Site JANUS: " + data.name,
+            _subject: "Novo Lead - Site JANUS",
+            _cc: "mateus.domis.santos@gmail.com", // Envia cópia para o Mateus
             _template: "table" // Deixa o e-mail formatado bonito em tabela
         })
       });
