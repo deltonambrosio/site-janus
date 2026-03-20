@@ -4,12 +4,6 @@ import { Send, CheckCircle } from 'lucide-react';
 
 const LeadCapture = () => {
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = () => {
-    // FormSubmit fará o redirecionamento nativo, então apenas mostramos que está carregando na interface.
-    setLoading(true);
-  };
 
   return (
     <section id="leads" className="section-spacing" style={{ background: '#050505', position: 'relative' }}>
@@ -55,14 +49,12 @@ const LeadCapture = () => {
                 <form 
                   action="https://formsubmit.co/dr.pts001@gmail.com" 
                   method="POST"
-                  onSubmit={handleSubmit}
                   style={{ display: 'flex', flexDirection: 'column', gap: '15px', position: 'relative', zIndex: 10 }}
                 >
                   <input type="hidden" name="_subject" value="Novo Lead - Site JANUS" />
                   <input type="hidden" name="_cc" value="mateus.domis.santos@gmail.com" />
                   <input type="hidden" name="_template" value="table" />
                   <input type="hidden" name="_captcha" value="true" />
-                  <input type="hidden" name="_next" value="https://janus.education/" />
 
                   <input required name="name" placeholder="Nome Completo" type="text" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
                   <input required name="email" placeholder="E-mail Corporativo" type="email" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
@@ -77,20 +69,17 @@ const LeadCapture = () => {
                   </select>
 
                   <button 
-                    disabled={loading}
+                    type="submit"
                     className="btn-primary" 
                     style={{ 
                       marginTop: '10px', 
                       width: '100%', 
                       justifyContent: 'center', 
                       fontSize: '1.1rem', 
-                      padding: '16px',
-                      opacity: loading ? 0.7 : 1
+                      padding: '16px'
                     }}
                   >
-                    {loading ? "Enviando..." : (
-                       <>Solicitar Demonstração <Send size={20} /></>
-                    )}
+                    Solicitar Demonstração <Send size={20} />
                   </button>
                   <p style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--color-muted)' }}>
                     Fique tranquilo, não enviamos spam. Seu contato está seguro.
