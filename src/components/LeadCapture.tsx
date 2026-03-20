@@ -55,6 +55,7 @@ const LeadCapture = () => {
                   <input type="hidden" name="_cc" value="mateus.domis.santos@gmail.com" />
                   <input type="hidden" name="_template" value="table" />
                   <input type="hidden" name="_captcha" value="true" />
+                  <input type="hidden" name="_next" value="https://janus-site.vercel.app/" />
 
                   <input required name="name" placeholder="Nome Completo" type="text" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
                   <input required name="email" placeholder="E-mail Corporativo" type="email" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
