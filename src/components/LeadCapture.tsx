@@ -6,14 +6,40 @@ const LeadCapture = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulação de envio
-    setTimeout(() => {
-       setLoading(false);
-       setSubmitted(true);
-    }, 1500);
+    
+    // Pegar dados do formulário
+    const formData = new FormData(e.target as HTMLFormElement);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      // Usando FormSubmit.co para envio direto via AJAX (sem precisar de backend complexo)
+      // Substitua "SEU_EMAIL_AQUI@dominio.com" pelo e-mail comercial real de vocês.
+      await fetch("https://formsubmit.co/ajax/contato@janus.education", {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            Nome: data.name,
+            Email: data.email,
+            WhatsApp: data.whatsapp,
+            Empresa: data.company,
+            Perfil: data.profile,
+            _subject: "Novo Lead - Site JANUS: " + data.name,
+            _template: "table" // Deixa o e-mail formatado bonito em tabela
+        })
+      });
+      setLoading(false);
+      setSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+      alert("Houve um erro ao enviar. Tente novamente.");
+    }
   };
 
   return (
@@ -61,13 +87,13 @@ const LeadCapture = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', flexDirection: 'column', gap: '15px', position: 'relative', zIndex: 10 }}
                 >
-                  <input required placeholder="Nome Completo" type="text" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
-                  <input required placeholder="E-mail Corporativo" type="email" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
-                  <input required placeholder="WhatsApp" type="tel" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
-                  <input required placeholder="Empresa ou Instituição" type="text" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
+                  <input required name="name" placeholder="Nome Completo" type="text" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
+                  <input required name="email" placeholder="E-mail Corporativo" type="email" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
+                  <input required name="whatsapp" placeholder="WhatsApp" type="tel" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
+                  <input required name="company" placeholder="Empresa ou Instituição" type="text" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
                   
-                  <select required style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }}>
-                    <option value="" disabled selected>Seu Perfil</option>
+                  <select required name="profile" defaultValue="" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }}>
+                    <option value="" disabled>Seu Perfil</option>
                     <option value="infoprodutor">Infoprodutor / Creator</option>
                     <option value="universidade">Universidade / Instituição</option>
                     <option value="outro">Outro</option>
