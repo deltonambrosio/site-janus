@@ -6,40 +6,9 @@ const LeadCapture = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = () => {
+    // FormSubmit fará o redirecionamento nativo, então apenas mostramos que está carregando na interface.
     setLoading(true);
-    
-    // Pegar dados do formulário
-    const formData = new FormData(e.target as HTMLFormElement);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-      // O e-mail principal (dr.pts001) receberá a mensagem e pedirá confirmação no primeiro envio
-      await fetch("https://formsubmit.co/ajax/dr.pts001@gmail.com", {
-        method: "POST",
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            Nome: data.name,
-            Email: data.email,
-            WhatsApp: data.whatsapp,
-            Empresa: data.company,
-            Perfil: data.profile,
-            _subject: "Novo Lead - Site JANUS",
-            _cc: "mateus.domis.santos@gmail.com", // Envia cópia para o Mateus
-            _template: "table" // Deixa o e-mail formatado bonito em tabela
-        })
-      });
-      setLoading(false);
-      setSubmitted(true);
-    } catch (err) {
-      console.error(err);
-      setLoading(false);
-      alert("Houve um erro ao enviar. Tente novamente.");
-    }
   };
 
   return (
@@ -84,9 +53,17 @@ const LeadCapture = () => {
             <div>
               {!submitted ? (
                 <form 
+                  action="https://formsubmit.co/dr.pts001@gmail.com" 
+                  method="POST"
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', flexDirection: 'column', gap: '15px', position: 'relative', zIndex: 10 }}
                 >
+                  <input type="hidden" name="_subject" value="Novo Lead - Site JANUS" />
+                  <input type="hidden" name="_cc" value="mateus.domis.santos@gmail.com" />
+                  <input type="hidden" name="_template" value="table" />
+                  <input type="hidden" name="_captcha" value="true" />
+                  <input type="hidden" name="_next" value="https://janus.education/" />
+
                   <input required name="name" placeholder="Nome Completo" type="text" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
                   <input required name="email" placeholder="E-mail Corporativo" type="email" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
                   <input required name="whatsapp" placeholder="WhatsApp" type="tel" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#fff' }} />
